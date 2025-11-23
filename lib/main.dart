@@ -68,7 +68,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future<void> _initRive() async {
     file = (await File.asset('assets/rabbits.riv', riveFactory: Factory.rive))!;
-
     controller = RiveWidgetController(file);
     viewModelInstance = controller.dataBind(DataBind.auto());
     setState(() {
@@ -80,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void dispose() {
     controller.dispose();
     file.dispose();
-    // viewModelInstance.dispose();
+    viewModelInstance.dispose();
     super.dispose();
   }
 
@@ -114,63 +113,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-// class _MyHomePageState extends State<MyHomePage> {
-//   late final File file;
-//   late final RiveWidgetController controller;
-//   late final ViewModelInstance viewModelInstance;
-//   bool _isInitialized = false;
-
-//   @override
-//   void initState() {
-//     _initRive();
-//     super.initState();
-//   }
-
-//   Future<void> _initRive() async {
-//     file = (await File.asset('assets/rabbits.riv', riveFactory: Factory.rive))!;
-
-//     controller = RiveWidgetController(file);
-//     viewModelInstance = controller.dataBind(DataBind.auto());
-//     setState(() {
-//       _isInitialized = true;
-//     });
-//   }
-
-//   @override
-//   void dispose() {
-//     controller.dispose();
-//     file.dispose();
-//     viewModelInstance.dispose();
-//     super.dispose();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     // This method is rerun every time setState is called, for instance as done
-//     // by the _incrementCounter method above.
-//     //
-//     // The Flutter framework has been optimized to make rerunning build methods
-//     // fast, so that you can just rebuild anything that needs updating rather
-//     // than having to individually change instances of widgets.
-//     return Scaffold(
-//       appBar: AppBar(
-//         // TRY THIS: Try changing the color here to a specific color (to
-//         // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-//         // change color while the other colors stay the same.
-//         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-//         // Here we take the value from the MyHomePage object that was created by
-//         // the App.build method, and use it to set our appbar title.
-//         title: const Text('Flutter Demo Home Page'),
-//       ),
-//       body: Center(
-//         child: _isInitialized
-//             ? RiveWidget(
-//                 controller: controller,
-//                 fit: Fit.scaleDown,
-//                 layoutScaleFactor: 1 / 30,
-//               )
-//             : const CircularProgressIndicator(),
-//       ),
-//     );
-//   }
-// }
