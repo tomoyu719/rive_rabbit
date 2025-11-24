@@ -58,6 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late final File file;
   late final RiveWidgetController controller;
   late final ViewModelInstance viewModelInstance;
+  late final ViewModelInstanceNumber poseProperty;
   bool _isInitialized = false;
 
   @override
@@ -70,6 +71,12 @@ class _MyHomePageState extends State<MyHomePage> {
     file = (await File.asset('assets/rabbits.riv', riveFactory: Factory.rive))!;
     controller = RiveWidgetController(file);
     viewModelInstance = controller.dataBind(DataBind.auto());
+    poseProperty = viewModelInstance.number('Pose')!;
+    poseProperty.addListener((value) {
+      print("Pose changed to: $value");
+    });
+
+    print("Properties: ${viewModelInstance.properties}");
     setState(() {
       _isInitialized = true;
     });
@@ -80,6 +87,7 @@ class _MyHomePageState extends State<MyHomePage> {
     controller.dispose();
     file.dispose();
     viewModelInstance.dispose();
+    poseProperty.dispose();
     super.dispose();
   }
 
@@ -101,14 +109,59 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: const Text('Flutter Demo Home Page'),
       ),
-      body: Center(
-        child: _isInitialized
-            ? RiveWidget(
-                controller: controller,
-                fit: Fit.scaleDown,
-                layoutScaleFactor: 1 / 30,
-              )
-            : const CircularProgressIndicator(),
+
+      body: Stack(
+        children: [
+          _isInitialized
+              ? RiveWidget(
+                  controller: controller,
+                  fit: Fit.scaleDown,
+                  layoutScaleFactor: 1 / 30,
+                )
+              : const CircularProgressIndicator(),
+          Positioned(
+            bottom: 0,
+            left: 0,
+            right: 0,
+            child: Center(
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      poseProperty.value = 1;
+                    },
+                    child: const Text('1'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      poseProperty.value = 2;
+                    },
+                    child: const Text('2'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      poseProperty.value = 3;
+                    },
+                    child: const Text('3'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      poseProperty.value = 4;
+                    },
+                    child: const Text('4'),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      poseProperty.value = 999;
+                    },
+                    child: const Text('5'),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
